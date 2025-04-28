@@ -18,3 +18,15 @@ def pytest_collection_modifyitems(config,items):
             if "slow" in item.keywords:
                 item.add_marker(skip_slow)
 
+@pytest.hookimpl(tryfirst=True, hookwrapper=True)
+def pytest_runtest_call(item):
+    start_time = time.time()
+    outcome = yield
+    duration = time.time() - start_time
+    item.duration = duration
+
+def pytest_runtest_makereport(item,call):
+    if call.when == "call":
+        if hasattr(item,'duration') and item.duration > SLOW_TEST_THRESHOLD:
+            if "slow" not in item.keywords:
+                print(f"Test {item.name} trwał {item.duration:.2f}s - warto go oznaczyć slow")
