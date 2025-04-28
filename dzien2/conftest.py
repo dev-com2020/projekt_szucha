@@ -21,5 +21,8 @@ def pytest_collection_modifyitems(config,items):
     if is_linux:
         for item in items:
             item.add_marker(skip_linux)
+    if is_windows:
+        for item in items:
+            item.name += "[zmodyfikowane]"
 
 
