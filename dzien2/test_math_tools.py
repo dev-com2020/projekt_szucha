@@ -4,6 +4,10 @@ import pytest
 def test_addition():
     assert add(2,3) == 5
 
+def test_add(sample_numbers):
+    a,b = sample_numbers
+    assert add(a,b) == 9
+
 def test_division():
     assert divide(10,2) == 5
 
